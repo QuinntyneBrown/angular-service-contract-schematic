@@ -149,7 +149,10 @@ function buildAngularServiceOptions(options: NormalizedSchema): Record<string, u
   return withoutUndefinedValues({
     name: options.name,
     project: options.project,
-    path: options.path,
+    // Drop an empty path (the working-directory default is empty at the
+    // workspace root) so the Angular schematic falls back to the project's
+    // default path, matching how getContractLocation resolves it.
+    path: options.path || undefined,
     flat: options.flat,
     skipTests: options.skipTests,
     type: options.type,

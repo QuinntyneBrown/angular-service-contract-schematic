@@ -311,4 +311,29 @@ describe('service schematic', () => {
     expect(service).toContain("import { IFooStore } from './foo.store.types';");
     expect(service).toContain('export class FooStore implements IFooStore');
   });
+
+  it('places the contract beside the service when a path is given', async () => {
+    const result = await runner.runSchematic(
+      'service',
+      {
+        name: 'gadget',
+        project: 'demo',
+        path: 'src/widgets',
+        skipTests: true,
+      },
+      tree,
+    );
+
+    expect(result.files).toContain('/src/widgets/gadget.service.ts');
+    expect(result.files).toContain('/src/widgets/gadget.service.contract.ts');
+
+    const service = result.readContent('/src/widgets/gadget.service.ts');
+
+    expect(service).toContain(
+      "import { IGadgetService } from './gadget.service.contract';",
+    );
+    expect(service).toContain(
+      'export class GadgetService implements IGadgetService',
+    );
+  });
 });

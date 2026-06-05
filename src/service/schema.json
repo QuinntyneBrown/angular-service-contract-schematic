@@ -23,7 +23,10 @@
     "path": {
       "type": "string",
       "format": "path",
-      "description": "The path where the service should be created."
+      "description": "The path where the service should be created.",
+      "$default": {
+        "$source": "workingDirectory"
+      }
     },
     "flat": {
       "type": "boolean",

@@ -5,7 +5,7 @@
       "description": "Generate an Angular service and a matching contract file with an InjectionToken.",
       "factory": "./dist/service/index#service",
       "schema": "./src/service/schema.json",
-      "aliases": ["contract-service"]
+      "aliases": ["contract-service", "s"]
     }
   }
 }
