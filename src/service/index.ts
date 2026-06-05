@@ -79,13 +79,70 @@ function implementContractInService(options: NormalizedSchema): Rule {
 }
 
 function normalizeOptions(options: Schema): NormalizedSchema {
+  const { name, type } = resolveNameAndType(options.name, options.type);
+
   return {
     ...options,
+    name,
     flat: options.flat ?? true,
     skipTests: options.skipTests ?? false,
-    type: options.type ?? 'service',
+    type,
     contractSuffix: options.contractSuffix ?? 'contract',
   };
+}
+
+const INFERRED_TYPES = ['store', 'controller', 'manager'] as const;
+
+/**
+ * Resolves the final service name and type.
+ *
+ * When the caller does not pass an explicit `type` and the name ends with one
+ * of the recognized suffixes (store/controller/manager), the suffix is stripped
+ * from the name and used as the type instead of the default `service`. So
+ * `FooStore` becomes name `foo` with type `store`, producing `foo.store.ts` and
+ * `class FooStore` rather than `foo-store.service.ts` and `class FooStoreService`.
+ *
+ * An explicit `type` always wins and disables this inference.
+ */
+function resolveNameAndType(
+  name: string,
+  explicitType?: string,
+): { name: string; type: string } {
+  if (explicitType !== undefined) {
+    return { name, type: explicitType };
+  }
+
+  return inferTypeFromName(name) ?? { name, type: 'service' };
+}
+
+function inferTypeFromName(
+  name: string,
+): { name: string; type: string } | null {
+  const segments = name.split('/');
+  const lastIndex = segments.length - 1;
+  const dasherized = strings.dasherize(segments[lastIndex]);
+
+  for (const type of INFERRED_TYPES) {
+    const marker = `-${type}`;
+
+    if (!dasherized.endsWith(marker)) {
+      continue;
+    }
+
+    const base = dasherized.slice(0, -marker.length);
+
+    // Require a non-empty base so a name that is only the suffix (e.g. `store`)
+    // is treated as an ordinary service rather than collapsing to an empty name.
+    if (base.length === 0) {
+      continue;
+    }
+
+    segments[lastIndex] = base;
+
+    return { name: segments.join('/'), type };
+  }
+
+  return null;
 }
 
 function buildAngularServiceOptions(options: NormalizedSchema): Record<string, unknown> {

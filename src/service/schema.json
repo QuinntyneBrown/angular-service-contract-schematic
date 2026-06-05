@@ -38,8 +38,7 @@
     },
     "type": {
       "type": "string",
-      "description": "Append a custom type to the generated service filename.",
-      "default": "service"
+      "description": "Append a custom type to the generated service filename. When omitted, the type is inferred from the name: a name ending in store, controller, or manager uses that suffix as the type (e.g. FooStore -> foo.store.ts), otherwise it defaults to service."
     },
     "contractSuffix": {
       "type": "string",
