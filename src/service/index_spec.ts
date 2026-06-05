@@ -53,11 +53,18 @@ describe('service schematic', () => {
 
     const contract = result.readContent('/src/app/foo.service.contract.ts');
 
-    expect(contract).toContain('export interface FooServiceContract');
+    expect(contract).toContain('export interface IFooService');
     expect(contract).toContain('export const FOO_SERVICE');
     expect(contract).toContain(
-      "new InjectionToken<FooServiceContract>('FOO_SERVICE')",
+      "new InjectionToken<IFooService>('FOO_SERVICE')",
     );
+
+    const service = result.readContent('/src/app/foo.service.ts');
+
+    expect(service).toContain(
+      "import { IFooService } from './foo.service.contract';",
+    );
+    expect(service).toContain('export class FooService implements IFooService');
   });
 
   it('creates the contract in the generated folder when flat is false', async () => {
@@ -74,6 +81,12 @@ describe('service schematic', () => {
 
     expect(result.files).toContain('/src/app/admin/foo/foo.service.ts');
     expect(result.files).toContain('/src/app/admin/foo/foo.service.contract.ts');
+
+    const service = result.readContent('/src/app/admin/foo/foo.service.ts');
+
+    expect(service).toContain(
+      "import { IFooService } from './foo.service.contract';",
+    );
+    expect(service).toContain('export class FooService implements IFooService');
   });
 });
-

@@ -20,11 +20,24 @@ The contract file contains:
 ```ts
 import { InjectionToken } from '@angular/core';
 
-export interface FooServiceContract {
+export interface IFooService {
   // Define the public API for FooService here.
 }
 
-export const FOO_SERVICE = new InjectionToken<FooServiceContract>('FOO_SERVICE');
+export const FOO_SERVICE = new InjectionToken<IFooService>('FOO_SERVICE');
+```
+
+The service is also patched to implement the generated interface:
+
+```ts
+import { Injectable } from '@angular/core';
+import { IFooService } from './foo.service.contract';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class FooService implements IFooService {
+}
 ```
 
 ## Build Locally
@@ -84,4 +97,3 @@ It also supports:
 ```
 
 The default contract file suffix is `contract`, producing `foo.service.contract.ts`.
-
