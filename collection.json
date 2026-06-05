@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "service": {
+      "description": "Generate an Angular service and a matching contract file with an InjectionToken.",
+      "factory": "./dist/service/index#service",
+      "schema": "./src/service/schema.json",
+      "aliases": ["contract-service"]
+    }
+  }
+}
+

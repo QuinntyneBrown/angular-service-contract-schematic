@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "AngularServiceContractSchematic",
+  "title": "Angular Service Contract Schematic",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the service.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      }
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "description": "The path where the service should be created."
+    },
+    "flat": {
+      "type": "boolean",
+      "description": "Create the service files at the top level of the configured path.",
+      "default": true
+    },
+    "skipTests": {
+      "type": "boolean",
+      "description": "Skip generating the service spec file.",
+      "default": false,
+      "alias": "skip-tests"
+    },
+    "type": {
+      "type": "string",
+      "description": "Append a custom type to the generated service filename.",
+      "default": "service"
+    },
+    "contractSuffix": {
+      "type": "string",
+      "description": "The suffix to append before .ts for the generated contract file.",
+      "default": "contract",
+      "alias": "contract-suffix"
+    }
+  },
+  "required": ["name"]
+}

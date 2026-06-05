@@ -1,0 +1,34 @@
+{
+  "name": "angular-service-contract-schematic",
+  "version": "0.1.0",
+  "description": "Angular schematic that generates a service plus a matching contract file and InjectionToken.",
+  "license": "MIT",
+  "schematics": "./collection.json",
+  "files": [
+    "collection.json",
+    "dist/service/index.js",
+    "dist/service/index.d.ts",
+    "src/service/schema.json",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.json",
+    "prepack": "npm run build",
+    "test": "npm run build && jasmine"
+  },
+  "peerDependencies": {
+    "@angular-devkit/schematics": ">=20.0.0 <23.0.0",
+    "@schematics/angular": ">=20.0.0 <23.0.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/core": "^20.0.0",
+    "@angular-devkit/schematics": "^20.0.0",
+    "@angular-devkit/schematics-cli": "^20.0.0",
+    "@schematics/angular": "^20.0.0",
+    "@types/jasmine": "^5.1.7",
+    "@types/node": "^22.15.0",
+    "jasmine": "^5.8.0",
+    "typescript": "^5.8.3"
+  }
+}
